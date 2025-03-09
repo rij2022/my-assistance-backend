@@ -14,6 +14,10 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
+  @Put('reset-password')
+  async resetPassword(@Body() resetDto: ResetPasswordDto) {
+    return this.userService.resetPassword(resetDto);
+  }
 @UseGuards(JwtAuthGuard)
 @Get('users')
 async getUsers(@Request() req) : Promise<any>{
@@ -41,9 +45,6 @@ async getUsers(@Request() req) : Promise<any>{
   async delete(@Request() req): Promise<User> {
     return this.userService.delete(req.user.userId);
   }
-  @Put('reset-password')
-async resetPassword(@Body() resetDto: ResetPasswordDto) {
-  return this.userService.resetPassword(resetDto);
-}
+
 
 }
