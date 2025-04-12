@@ -5,11 +5,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MailService } from './mail/mail.service';
+import { TaskModule } from './tasks/tasks.module';
+
 
 @Module({
   imports: [  MongooseModule.forRoot('mongodb://localhost/user-management'),
     UserModule,
-    AuthModule
+    AuthModule,
+    TaskModule,
+  
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
