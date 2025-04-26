@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MailService } from './mail/mail.service';
 import { TaskModule } from './tasks/tasks.module';
+import { AiStoreModule } from './ai-store/ai-store.module';
+import { MoodsModule } from './moods/moods.module';
 
 
 @Module({
@@ -13,6 +15,8 @@ import { TaskModule } from './tasks/tasks.module';
     UserModule,
     AuthModule,
     TaskModule,
+    AiStoreModule,
+    MoodsModule,
   
   ],
   controllers: [AppController],
