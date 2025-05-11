@@ -5,4 +5,5 @@ export class CreateTaskDto {
     startDate: Date;
     endDate: Date;
     period: 'morning' | 'evening' | 'night';
+    subtasks?: { title: string; estimation: string; completed?: boolean;}[];
   }

@@ -20,6 +20,7 @@ export class UserService {
       name: createUserDto.name,
       email: createUserDto.email,
       hashedPassword,
+      score: createUserDto.score,
     });
 
     return await newUser.save();}
@@ -59,6 +60,13 @@ export class UserService {
   }
   if (updateUserDto.password) {
     updateData.hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+  }
+  if (updateUserDto.score) {
+    // Convert incoming score (string) to a number
+    const scoreNum = Number(updateUserDto.score);
+    if (!isNaN(scoreNum)) {
+      updateData.score = scoreNum;
+    }
   }
   console.log(updateData)
 

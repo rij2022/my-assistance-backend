@@ -31,6 +31,9 @@ export class Task extends Document {
 
   @Prop({ required: true, type: String })
   userId: string;
+
+  @Prop({ type: [{ title: String, estimation: String, completed: { type: Boolean, default: false } }], default: [] })
+  subtasks: { title: string; estimation: string; completed: boolean }[];
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

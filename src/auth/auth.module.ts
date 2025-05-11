@@ -13,7 +13,7 @@ import { UserSchema } from 'src/user/schemas/user.schema';
     PassportModule,
     JwtModule.register({
       secret: '55dc9d194ef26afcac0230b5880c573b91d029d39a75cd3a313bdb30c9faa368dbda01f3e795eb30397560c977559510afa7da25aba31586f2d59500b1ff9c8b', // Replace with a strong secret key
-      signOptions: { expiresIn: '1h' }, // Token expires in 1 hour
+      signOptions: { expiresIn: '2h' }, // Token expires in 1 hour
     }),
     UserModule,
   ],
