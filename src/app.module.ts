@@ -8,6 +8,7 @@ import { MailService } from './mail/mail.service';
 import { TaskModule } from './tasks/tasks.module';
 import { AiStoreModule } from './ai-store/ai-store.module';
 import { MoodsModule } from './moods/moods.module';
+import { SpecialInterestGroupModule } from './special-interest-group/special-interest-group.module';
 
 
 @Module({
@@ -17,6 +18,7 @@ import { MoodsModule } from './moods/moods.module';
     TaskModule,
     AiStoreModule,
     MoodsModule,
+    SpecialInterestGroupModule,
   
   ],
   controllers: [AppController],
