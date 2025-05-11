@@ -1,4 +1,5 @@
-import { IsString, IsEmail, MinLength, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsEmail, MinLength, IsNotEmpty ,IsOptional ,IsIn, IsNumber } from 'class-validator';
+import { Number } from 'mongoose';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -12,7 +13,10 @@ export class CreateUserDto {
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
   password: string;
 
+  @IsOptional()
+  @IsIn(['child', 'parent'], { message: 'Role must be either child or parent' })
+  role?: 'child' | 'parent';
+
   @IsNumber()
   score: string;
-
 }

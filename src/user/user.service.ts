@@ -7,6 +7,8 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { log } from 'node:console';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import * as nodemailer from 'nodemailer';
+
 
 @Injectable()
 export class UserService {
@@ -21,6 +23,7 @@ export class UserService {
       email: createUserDto.email,
       hashedPassword,
       score: createUserDto.score,
+      role: createUserDto.role || 'child',
     });
 
     return await newUser.save();}
@@ -106,4 +109,62 @@ async resetPassword(resetDto: ResetPasswordDto) {
     }
     return null;
   }
+
+  async setParentCode(userId: string, code: string): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, { parentCode: code });
+  }
+  async linkToChild(parentId: string, code: string): Promise<void> {
+    const child = await this.userModel.findOne({ parentCode: code });
+    if (!child) {
+      throw new Error('Child not found with this code');
+    }
+  
+    await this.userModel.findByIdAndUpdate(parentId, { linkedChildId: child._id });
+  }
+  async getLinkedChild(parentId: string): Promise<User | null> {
+    const parent = await this.userModel.findById(parentId).populate('linkedChildId');
+    return parent?.linkedChildId || null;
+  }
+  async emailParentCode(email: string, childName: string, code: string) {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'mkaouaremna2@gmail.com',       // ✅ ton email
+        pass: 'jbmqotnwnxmbrjpu',  
+      },
+    });
+  
+    const mailOptions = {
+      from: 'mkaouaremna2@gmail.com',
+      to: email,
+      subject: `Parent Code from ${childName}`,
+      html: `
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f7f7f7;">
+      <div style="max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <h2 style="color: #6C63FF; text-align: center;">👨‍👩‍👧 Invitation from ${childName}</h2>
+        <p style="font-size: 16px; color: #333;">Hi there!</p>
+        <p style="font-size: 16px; color: #333;">
+          <strong>${childName}</strong> has invited you to join them as their assistant in the <strong>MyAssistance</strong> app.
+        </p>
+        <p style="font-size: 16px; color: #333;">Use the code below to connect:</p>
+
+        <input 
+          type="text" 
+          value="${code}" 
+          readonly 
+          style="width: 100%; padding: 10px; font-size: 20px; text-align: center; border: 2px solid #6C63FF; border-radius: 6px; background-color: #f0f0f0; color: #333;"
+        />
+
+        <p style="font-size: 14px; color: #666; margin-top: 16px;">You can select and copy the code above.</p>
+      </div>
+    </div>
+  `,    
+  };
+  
+    await transporter.sendMail(mailOptions);
+  }
+  
+  
+  
+  
 }

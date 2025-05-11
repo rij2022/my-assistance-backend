@@ -27,7 +27,7 @@ export class AuthService {
 
   async login(user: any) {
 
-    const payload = { email: user._doc.email, sub: user._doc._id.toString()};
+    const payload = { email: user._doc.email, sub: user._doc._id.toString(),role: user._doc.role,};
   
     return {
       access_token: this.jwtService.sign(payload),
@@ -75,5 +75,6 @@ export class AuthService {
   
     return { success: true, message: 'OTP verified' };
   }
+  
   
 }
